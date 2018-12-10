@@ -55,6 +55,7 @@ public class ThreeGridActivity extends AppCompatActivity implements GridAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_three_grid);
+        Toast.makeText(this, "Support later", Toast.LENGTH_LONG).show();
         addControls();
         addEvents();
     }
@@ -232,7 +233,6 @@ public class ThreeGridActivity extends AppCompatActivity implements GridAdapter.
 
     private void createCustomView() {
         createLayout.setOrientation(LinearLayout.VERTICAL);
-        createLayout.removeAllViewsInLayout();
         LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1);
         FrameLayout.LayoutParams layoutParams1=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
@@ -267,7 +267,6 @@ public class ThreeGridActivity extends AppCompatActivity implements GridAdapter.
                 ll.addView(frame);
                 frameLayouts[j] = (FrameLayout) findViewById(j + 5);
                 images[j] = (ImageView) findViewById(j);
-                Log.i("Test",""+ll.getChildCount());
             }
         }
         createLayout.addView(ll);
