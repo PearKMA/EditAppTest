@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -55,9 +57,8 @@ public class ThreeGridActivity extends AppCompatActivity implements GridAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_three_grid);
-        Toast.makeText(this, "Support later", Toast.LENGTH_LONG).show();
         addControls();
-        addEvents();
+
     }
     private void addControls() {
         rvMenu =(RecyclerView)findViewById(R.id.recMenu);
@@ -69,7 +70,7 @@ public class ThreeGridActivity extends AppCompatActivity implements GridAdapter.
         adapter = new GridAdapter(this, listItem);
         rvMenu.setAdapter(adapter);
         main_layout= this.<LinearLayout>findViewById(R.id.main_layout);
-        createLayout= this.<LinearLayout>findViewById(R.id.layoutSet);
+        createLayout= (LinearLayout) findViewById(R.id.layoutSet);
         createLayout.setOrientation(LinearLayout.HORIZONTAL);
         createView();
     }
@@ -211,66 +212,66 @@ public class ThreeGridActivity extends AppCompatActivity implements GridAdapter.
     public void onHandleSelection(int position) {
         switch (position){
             case 0:
-                if (createLayout==null){
-                    createView();
-                }
+                createLayout.removeAllViews();
                 createLayout.setOrientation(LinearLayout.HORIZONTAL);
+                createView();
                 break;
             case 1:
-                if (createLayout==null){
-                    createView();
-                }
+                createLayout.removeAllViews();
                 createLayout.setOrientation(LinearLayout.VERTICAL);
+                createView();
                 break;
             case 2:
-                if (createLayout==null){
-                    createCustomView();
-                }
                 createCustomView();
                 break;
         }
     }
 
     private void createCustomView() {
+        createLayout.removeAllViews();
         createLayout.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1);
-        FrameLayout.LayoutParams layoutParams1=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
-                ,FrameLayout.LayoutParams.MATCH_PARENT);
+        //create top view
+        FrameLayout frameLayout=new FrameLayout(this);
+        frameLayout.setId(R.id.fr1);
+        ImageView img =new ImageView(this);
+        img.setId(R.id.img1);
+        img.setImageResource(R.drawable.select);
+        frameLayout.addView(img, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+        createLayout.addView(frameLayout,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,2));
         LinearLayout ll=new LinearLayout(this);
-        ll.setLayoutParams(layoutParams);
         ll.setOrientation(LinearLayout.HORIZONTAL);
-        for (int j=0;j<3;j++) {
-            if (j==0) {
-                //create frame1
-                FrameLayout frame = new FrameLayout(this);
-                frame.setId(j + 5);
-                frame.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,2));
-                //create imageview1
-                ImageView img1 = new ImageView(this);
-                img1.setLayoutParams(layoutParams1);
-                img1.setId(j);
-                frame.addView(img1, layoutParams1);
-                createLayout.addView(frame);
-                frameLayouts[j] = (FrameLayout) findViewById(j + 5);
-                images[j] = (ImageView) findViewById(j);
-            } else{
-                FrameLayout frame = new FrameLayout(this);
-                frame.setId(j + 5);
-                frame.setLayoutParams(layoutParams);
-                //create imageview1
-                ImageView img1 = new ImageView(this);
-                img1.setLayoutParams(layoutParams1);
-                img1.setId(j);
-                frame.addView(img1, layoutParams1);
-                ll.addView(frame);
-                frameLayouts[j] = (FrameLayout) findViewById(j + 5);
-                images[j] = (ImageView) findViewById(j);
-            }
-        }
-        createLayout.addView(ll);
+        //create left view
+        FrameLayout frameLayout1=new FrameLayout(this);
+        frameLayout1.setId(R.id.fr2);
+        ImageView img1 =new ImageView(this);
+        img1.setId(R.id.img2);
+        img1.setImageResource(R.drawable.select);
+        frameLayout1.addView(img1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+        ll.addView(frameLayout1,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,1));
+        //create right view
+        FrameLayout frameLayout2=new FrameLayout(this);
+        frameLayout2.setId(R.id.fr3);
+        ImageView img2 =new ImageView(this);
+        img2.setId(R.id.img3);
+        img2.setImageResource(R.drawable.select);
+        frameLayout2.addView(img2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+        ll.addView(frameLayout2,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,1));
+        createLayout.addView(ll,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,1));
+        frameLayouts[0]=(FrameLayout) findViewById(R.id.fr1);
+        frameLayouts[1]=(FrameLayout) findViewById(R.id.fr2);
+        frameLayouts[2]=(FrameLayout) findViewById(R.id.fr3);
+        images[0]=(ImageView)findViewById(R.id.img1);
+        images[1]=(ImageView)findViewById(R.id.img2);
+        images[2]=(ImageView)findViewById(R.id.img3);
         addImage();
+        addEvents();
     }
 
     private void createView() {
@@ -294,7 +295,7 @@ public class ThreeGridActivity extends AppCompatActivity implements GridAdapter.
         }
 
         addImage();
-
+        addEvents();
     }
 
     private void addImage() {
